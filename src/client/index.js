@@ -33,10 +33,10 @@ fetch('http://localhost:3000/parse', { credentials: 'omit' })
         const blue = scan.blue[i];
 
         geometry.vertices.push(new THREE.Vector3(x, y, z))
-        geometry.colors.push(new THREE.Color(red, green, blue));
+        geometry.colors.push(new THREE.Color(`rgb(${red}, ${green}, ${blue})`));
       }
-      const material = new THREE.PointsMaterial( { size: 1, vertexColors: THREE.VertexColors } );
-      const cloud = new THREE.Points(geometry, material);
+
+      const cloud = new THREE.Points(geometry, new THREE.PointsMaterial({ size: 1, vertexColors: THREE.VertexColors }));
       scene.add(cloud);
     });
 
