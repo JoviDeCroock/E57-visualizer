@@ -105,3 +105,4 @@ dist
 
 # Test-data
 *.e57
+!pump.e57
