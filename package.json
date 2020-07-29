@@ -1,15 +1,19 @@
 {
-  "name": "untitled-folder",
+  "name": "e57-visualizer",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev:server": "nodemon src/server/index.js",
+    "dev:client": "servor src/client"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemon": "^2.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "python-shell": "^1.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2",
+    "servor": "^4.0.2"
   }
 }
