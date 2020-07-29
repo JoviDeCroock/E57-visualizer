@@ -1,14 +1,14 @@
 import * as THREE from 'https://unpkg.com/three@latest/build/three.module.js';
 
-var renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
+const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
 camera.position.set( 0, 0, 100 );
 camera.lookAt( 0, 0, 0 );
 
-var scene = new THREE.Scene();
+const scene = new THREE.Scene();
 
 fetch('http://localhost:3000/parse', { credentials: 'omit' })
   .then(res => {
@@ -39,5 +39,6 @@ fetch('http://localhost:3000/parse', { credentials: 'omit' })
       const cloud = new THREE.Line(geometry, material);
       scene.add(cloud);
     });
-    renderer.render( scene, camera );
+
+    renderer.render(scene, camera);
   })
