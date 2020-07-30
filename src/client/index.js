@@ -33,6 +33,10 @@ function animate() {
   render();
 }
 
+const loading = document.createElement('div');
+loading.innerText = 'LOADING...';
+document.body.insertBefore(loading, renderer.domElement);
+
 fetch('http://localhost:3000/parse', { credentials: 'omit' })
   .then(res => {
     if (!res.ok) {
@@ -63,7 +67,8 @@ fetch('http://localhost:3000/parse', { credentials: 'omit' })
       scene.add(cloud);
     });
 
-    renderer.render(scene, camera);
+    document.body.removeChild(loading)
+    // renderer.render(scene, camera);
   });
 
 animate();
