@@ -1,9 +1,14 @@
 import * as THREE from 'https://unpkg.com/three@latest/build/three.module.js';
-import { OrbitControls } from './OrbitControls';
+import { OrbitControls } from './OrbitControls.js';
+import { addLoading, removeLoading } from './utils.js';
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
 const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
 camera.position.set(0, 0, 100);
@@ -33,9 +38,7 @@ function animate() {
   render();
 }
 
-const loading = document.createElement('div');
-loading.innerText = 'LOADING...';
-document.body.insertBefore(loading, renderer.domElement);
+addLoading(renderer.domElement)
 
 fetch('http://localhost:3000/parse', { credentials: 'omit' })
   .then(res => {
@@ -46,29 +49,19 @@ fetch('http://localhost:3000/parse', { credentials: 'omit' })
     return res.json();
   })
   .then(data => {
-    data.forEach((scan, i) => {
+    data.forEach(scan => {
       const amountOfPoints = scan.x.length;
-
       const geometry = new THREE.Geometry();
-      console.log(geometry);
-      for (let i = 0;i < amountOfPoints; i++) {
-        const x = scan.x[i];
-        const y = scan.y[i];
-        const z = scan.z[i];
-        const red = scan.red[i];
-        const green = scan.green[i];
-        const blue = scan.blue[i];
 
-        geometry.vertices.push(new THREE.Vector3(x, y, z))
-        geometry.colors.push(new THREE.Color(`rgb(${red}, ${green}, ${blue})`));
+      for (let i = 0;i < amountOfPoints; i++) {
+        geometry.vertices.push(new THREE.Vector3(scan.x[i], scan.y[i], scan.z[i]))
+        geometry.colors.push(new THREE.Color(`rgb(${scan.red[i]}, ${scan.green[i]}, ${scan.blue[i]})`));
       }
 
-      const cloud = new THREE.Points(geometry, new THREE.PointsMaterial({ size: 1, vertexColors: THREE.VertexColors }));
-      scene.add(cloud);
+      scene.add(new THREE.Points(geometry, new THREE.PointsMaterial({ size: 1, vertexColors: THREE.VertexColors })));
     });
 
-    document.body.removeChild(loading)
-    // renderer.render(scene, camera);
+    removeLoading();
   });
 
 animate();
